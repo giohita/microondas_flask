@@ -1,0 +1,23 @@
+[
+    {
+        "id": 1,
+        "nombre": "Palomitas de maíz",
+        "ingredientes": ["Maíz palomero", "Aceite", "Sal"],
+        "tiempo": 3,
+        "unidad_tiempo": "minutos"
+    },
+    {
+        "id": 2,
+        "nombre": "Sopa instantánea",
+        "ingredientes": ["Fideos instantáneos", "Saborizante", "Agua"],
+        "tiempo": 5,
+        "unidad_tiempo": "minutos"
+    },
+    {
+        "id": 3,
+        "nombre": "Descongelar pollo",
+        "ingredientes": ["Pollo congelado"],
+        "tiempo": 15,
+        "unidad_tiempo": "minutos"
+    }
+]

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Microondas Inteligente</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+    <body>
+        <h1>Lista de Recetas</h1>
+        <ul>
+            {% for receta in recetas %}
+            <li>{{ receta.nombre }} - Tiempo: {{ receta.tiempo }} {{receta.unidad_tiempo}}
+                <button>Enviar al horno</button>
+            </li>
+            {% endfor %}
+        </ul>
+        
+        <script src="" async defer></script>
+    </body>
+</html>
