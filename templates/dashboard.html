@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard de Cocciones{% endblock %}
+
+{% block content %}
+    <h1>Dashboard de Cocciones Programadas</h1>
+    {% if programaciones %}
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre de la Receta</th>
+                    <th>Fecha y Hora Programada</th>
+                    <th>Tiempo de Cocción</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for prog in programaciones %}
+                <tr>
+                    <td>{{ prog.id }}</td>
+                    <td>{{ prog.nombre }}</td>
+                    <td>{{ prog.fecha_programada }}</td>
+                    <td>{{ prog.tiempo_coccion }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        No hay cocciones programadas actualmente.
+    </div>
+    {% endif %}
+    <a href="{{ url_for('index') }}" class="btn btn-primary mt-3">Volver al inicio</a>
+{% endblock %}
