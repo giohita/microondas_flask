@@ -1,44 +1,20 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Microondas Inteligente</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="">
-        <script>
-            function enviarAlHorno(recetaId) {
-                fetch(`/enviar_horno/${recetaId}`)
-                .then(response => response.json())
-                .then(data => {
-                    alert(data.mensaje);
-                    alert(data.mensaje_final);
-                    console.log(`Receta '${data.receta}' cocinada.`);
-                })
-                .catch(error => {
-                    console.error('Error al enviar al horno:', error);
-                    alert('Ocurrió un error al enviar la receta al horno.');
-                });
-            }
+{% extends 'base.html' %}
 
-            function personalizarReceta(recetaId) {
-                // Por ahora, simplemente redirigiremos a una nueva página
-                window.location.href = `/personalizar_receta/${recetaId}`;
-            }
-        </script>
-    </head>
-    <body>
-        <h1>Lista de Recetas</h1>
-        <ul>
-            {% for receta in recetas %}
-            <li>{{ receta.nombre }} - Tiempo: {{ receta.tiempo }} {{receta.unidad_tiempo}}
-                <button onclick="enviarAlHorno({{ receta.id }})">Enviar al horno</button>
-                <button onclick="personalizarReceta({{ receta.id }})">Personalizar</button>
+{% block title %}Lista de Recetas - Microondas Inteligente{% endblock %}
+
+{% block content %}
+    <h1>Lista de Recetas</h1>
+    <ul class="list-group">
+        {% for receta in recetas %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    {{ receta.nombre }} - Tiempo: {{ receta.tiempo }} {{ receta.unidad_tiempo }}
+                </div>
+                <div>
+                    <button class="btn btn-primary btn-sm" onclick="enviarAlHorno({{ receta.id }})">Enviar al horno</button>
+                    <button class="btn btn-secondary btn-sm ml-2" onclick="personalizarReceta({{ receta.id }})">Personalizar</button>
+                </div>
             </li>
-            {% endfor %}
-        </ul>
-        
-        <script src="" async defer></script>
-    </body>
-</html>
+        {% endfor %}
+    </ul>
+{% endblock %}
