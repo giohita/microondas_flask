@@ -1,23 +1,33 @@
 [
-    {
-        "id": 1,
-        "nombre": "Palomitas de maíz",
-        "ingredientes": ["Maíz palomero", "Aceite", "Sal"],
-        "tiempo": 3,
-        "unidad_tiempo": "minutos"
-    },
-    {
-        "id": 2,
-        "nombre": "Sopa instantánea",
-        "ingredientes": ["Fideos instantáneos", "Saborizante", "Agua"],
-        "tiempo": 5,
-        "unidad_tiempo": "minutos"
-    },
-    {
-        "id": 3,
-        "nombre": "Descongelar pollo",
-        "ingredientes": ["Pollo congelado"],
-        "tiempo": 15,
-        "unidad_tiempo": "minutos"
-    }
+  {
+    "id": 1,
+    "nombre": "Palomitas de ma\u00edz",
+    "ingredientes": [
+      "Ma\u00edz palomero",
+      "Aceite",
+      "Sal"
+    ],
+    "tiempo": 3,
+    "unidad_tiempo": "minutos"
+  },
+  {
+    "id": 2,
+    "nombre": "Sopa instant\u00e1nea",
+    "ingredientes": [
+      "Fideos instant\u00e1neos",
+      "Saborizante",
+      "Agua"
+    ],
+    "tiempo": 5,
+    "unidad_tiempo": "minutos"
+  },
+  {
+    "id": 3,
+    "nombre": "Descongelar pollo",
+    "ingredientes": [
+      "Pollo congelado"
+    ],
+    "tiempo": 15,
+    "unidad_tiempo": "minutos"
+  }
 ]
