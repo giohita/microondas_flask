@@ -13,8 +13,81 @@
                 <div>
                     <button class="btn btn-primary btn-sm" onclick="enviarAlHorno({{ receta.id }})">Enviar al horno</button>
                     <button class="btn btn-secondary btn-sm ml-2" onclick="personalizarReceta({{ receta.id }})">Personalizar</button>
+                    <button class="btn btn-info btn-sm ml-2" onclick="programarReceta({{ receta.id }})">Programar</button>
                 </div>
             </li>
         {% endfor %}
     </ul>
+
+    <div class="modal fade" id="programarModal" tabindex="-1" role="dialog" aria-labedlledby="programarModalLabel" aria-hidden="true">
+        <div class = "modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="programarModalLabel">Programar Cocción</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div>
+                    <p>Seleecione la fecha y hora para inciar la cocción de la receta con ID <span id="receta-id-programar"></span>:</p>
+                    <form id="programarForm" method="POST" action="/guardar_programacion/0">
+                        <div class="form-group">
+                            <label for="programar_hora">Fecha:</label>
+                            <input type="date" class="form-control" id="programar_fecha" name="fecha">
+                        </div>
+                        <div class="form-group">
+                            <label for="programar_hora">Hora:</label>
+                            <input type="time" class="form-control" id="programar_hora" name="hora">
+                        </div>
+                        <input type="hidden" id="programar_receta_id" name="receta_id" value="">
+                        <button type="submit" class="btn btn-primary">Guardar Programación</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function enviarAlHorno(recetaID) {
+            fetch(`/enviar_horno/${recetaId}`)
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.mensaje);
+                    alert(data.mensaje_final);
+                    console.log(`Receta '${data.receta}' cocinada.`);
+                })
+                .catch(error => {
+                    console.error('Error al enviar al horno:', error);
+                    alert('Ocurrió un error al enviar la receta al horno.');
+                });
+        }
+
+        function personalizarReceta(recetaId) {
+            window.location.href = `/personalizar_receta/${recetaId}`;
+        }
+
+        function programarReceta(recetaId) {
+            // Mostrar el modal de Bootstrap
+            $('#programarModal').modal('show');
+
+            //actualizar el texto del modal con el ID de la receta
+            document.getElementById('receta-id-programar').textContent = recetaId;
+
+            // Actualizar el valor del campo oculto con el ID de la receta
+            document.getElementByID('programar_receta_id').value = recetaId;
+
+            // Actualizar la acción del formulario con el ID de la receta
+            const programarForm = document.getElementById('programarForm');
+            programarForm.action = `/guardar_programacion/${recetaId}`;
+        }
+
+        // Inicializar el modal de Bootstrap
+        $(document).ready(function(){
+            $('#programarModal').modal({
+                show: false // Inicialmente oculto
+            });
+        });
+    </script>
 {% endblock %}

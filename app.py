@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 import json
 from time import sleep
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -64,6 +65,48 @@ def guardar_personalizacion(receta_id):
         return f"receta con ID {receta_id} personalizada. Nuevo tiempo: {nuevo_tiempo}."
     else:
         return "Método no permitido.", 405
+
+programaciones = {}
+
+@app.route('/guardar_programacion/<int:receta_id>', methods=['POST'])
+def guardar_programacion(receta_id):
+    if request.method == 'POST':
+        fecha_str = request.form.get('fecha')
+        hora_str = request.form.get('hora')
+        
+        if fecha_str and hora_str:
+            try:
+                programar_en_str = f"{fecha_str} {hora_str}"
+                programar_en = datetime.strptime(programar_en_str, '%Y-%m-%d %H:%M')
+                programaciones[receta_id] = programar_en
+                print(f"Programación guardada: {programaciones}") # Añade esta línea
+                return f"Cocción de la receta con ID {receta_id} programada para las {programar_en_str}."
+            except ValueError:
+                return "Formato de fecha u hora inválido.", 400
+        else:
+            return "Por favor, seleccione fecha y hora.", 400
+    else:
+        return "Método no permitido.", 405
+
+#función para simular la verificación de programaciones (esto sería más complejo en una app real)
+def verificar_programaciones():
+    ahora = datetime.now()
+    for receta_id, hora_programada in list(programaciones.items()): # Iterar sobre una copia para permitir la eliminación
+        if ahora >= hora_programada:
+            print(f"Iniciando cocción programada para la receta con ID {receta_id}")
+            # Aquí iría la lógica real para inciar la cocción (simulación)
+            del programaciones[receta_id] # Eliminar de las programaciones activas
+
+# Simulación de un proceso en segundo plano para verificar prograaciones (solo para demostración)
+import threading
+def ejecutar_verificacion_periodica():
+    while True:
+        verificar_programaciones()
+        sleep(60) # Verificar cada 60 segundos
+
+thread = threading.Thread(target=ejecutar_verificacion_periodica)
+thread.daemon = True # El hilo Terminará cuando la aplicación principal termine
+thread.start()
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
