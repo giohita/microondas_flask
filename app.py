@@ -12,10 +12,6 @@ def index():
 
 @app.route('/enviar_horno/<int:receta_id>')
 def enviar_horno(receta_id):
-    ''' Aquí recibimos el ID de la receta que se quiere enviar al horno
-    Por ahora, vamos a simular el proceso y devolver un mensaje
-    '''
-    
     with open('recetas.json', 'r') as f:
         recetas = json.load(f)
         
@@ -23,13 +19,12 @@ def enviar_horno(receta_id):
         
         if receta_seleccionada:
             nombre_receta = receta_seleccionada['nombre']
-            tiempo_coccion = receta_seleccionada['tiempo']
-            unidad_tiempo = receta_seleccionada['unidad_tiempo']
+            tiempo_coccion = receta_seleccionada.get('tiempo', 0) # Usamos .get() con un valor por defecto
+            unidad_tiempo = receta_seleccionada.get('unidad_tiempo', 'minutos') # Aseguramos tener un valor
             
             mensaje = f"Receta '{nombre_receta}' enviada al horno. " \
                       f"Simulando cocción por {tiempo_coccion} {unidad_tiempo}..."
             
-            # Simulación de la cocción (puedes ajustar el tiempo para pruebas)
             sleep(tiempo_coccion)
             
             mensaje_final = f"¡Cocción de '{nombre_receta}' finalizada!"
