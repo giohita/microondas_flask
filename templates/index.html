@@ -7,13 +7,28 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="">
+        <script>
+            function enviarAlHorno(recetaId) {
+                fetch(`/enviar_horno/${recetaId}`)
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.mensaje);
+                    alert(data.mensaje_final);
+                    console.log(`Receta '${data.receta}' cocinada.`);
+                })
+                .catch(error => {
+                    console.error('Error al enviar al horno:', error);
+                    alert('Ocurrió un error al enviar la receta al horno.');
+                });
+            }
+        </script>
     </head>
     <body>
-        <h1>Lista de Recetas</h1>
+        <h1>Lista de Recetasa</h1>
         <ul>
             {% for receta in recetas %}
             <li>{{ receta.nombre }} - Tiempo: {{ receta.tiempo }} {{receta.unidad_tiempo}}
-                <button>Enviar al horno</button>
+                <button onclick="enviarAlHorno({{ receta.id }})">Enviar al horno</button>
             </li>
             {% endfor %}
         </ul>
