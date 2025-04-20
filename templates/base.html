@@ -2,48 +2,37 @@
 <html lang="es">
     <head>
         <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>{% block title %}Microondas Inteligente{% endblock %}</title>
-        <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}Microondas Inteligente{% endblock %}</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-        <style>
-            body { padding-top: 60px; }
-        </style>
-        {% block head %}
-        {% endblock %}
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        {% block head %}{% endblock %}
     </head>
     <body>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-            <a class="navbar-brand" href="/">Microondas Inteligente</a>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="{{ url_for('index') }}">Microondas Inteligente</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{ url_for('index') }}">Inicio<span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
+                    </li>
+                </ul>
+            </div>
         </nav>
-        <div class ="container">
+
+        <div class ="container mt-5">
             {% block content %}
             {% endblock %}
         </div>
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-        {% block scripts %}
-        <script>
-            function enviarAlHorno(recetaId) {
-                fetch(`/enviar_horno/${recetaId}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        alert(data.mensaje);
-                        alert(data.mensaje_final);
-                        console.log(`Receta '${data.receta}' cocinada.`);
-                    })
-                    .catch(error => {
-                        console.error('Error al enviar al horno:', error);
-                        alert('Ocurrió un error al enviar la receta al horno.');
-                    });
-            }
-
-            function personalizarReceta(recetaId) {
-                window.location.href = `/personalizar_receta/${recetaId}`;
-            }
-        </script>
-        {% endblock %}
+        {% block scripts %}{% endblock %}
     </body>
 </html>
