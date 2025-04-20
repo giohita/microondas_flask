@@ -1,0 +1,172 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f6f8; /* Un gris claro de fondo */
+    color: #333; /* Texto principal oscuro */
+    line-height: 1.6;
+    padding-top: 60px; /* Espacio para la barra de navegación fija */
+}
+
+/* Barra de navegación */
+.navbar {
+    background-color: #fff !important; /* Fondo blanco */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Sombra sutil */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #007bff; /* Color primario */
+}
+
+.navbar-nav .nav-link {
+    color: #333;
+    margin-left: 15px;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #007bff;
+}
+
+.navbar-toggler {
+    border: none;
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(0, 123, 255, 0.5)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+/* Contenedor principal */
+.container {
+    max-width: 960px;
+}
+
+/* Tarjetas de receta */
+.card {
+    border: none;
+    box-shadow: 0 0.15rem 0.5rem rgba(0, 0, 0, 0.05);
+    border-radius: 0.5rem;
+    margin-bottom: 20px;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    margin-bottom: 0.75rem;
+    color: #333;
+}
+
+.card-text {
+    color: #6c757d;
+    margin-bottom: 1rem;
+}
+
+/* Botones */
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    border-radius: 0.25rem;
+    transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    border-radius: 0.25rem;
+    transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+}
+
+.btn-secondary:hover {
+    background-color: #545b62;
+    border-color: #4e555b;
+}
+
+.btn-info {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+    border-radius: 0.25rem;
+    transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+}
+
+.btn-info:hover {
+    background-color: #117a8b;
+    border-color: #10707f;
+}
+
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    border-radius: 0.2rem;
+}
+
+/* Barra de progreso */
+.progress {
+    height: 0.5rem; /* Barra más delgada */
+    background-color: #e9ecef;
+    border-radius: 0.25rem;
+    overflow: hidden;
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+}
+
+.progress-bar {
+    background-color: #28a745; /* Color verde para la barra de progreso */
+    color: white;
+    text-align: center;
+    height: 100%;
+    line-height: 0.5rem; /* Centrar el texto verticalmente si lo hubiera */
+    font-size: 0.75rem;
+    transition: width 0.6s ease; /* Animación más suave */
+}
+
+/* Mensajes de alerta */
+.alert {
+    border-radius: 0.25rem;
+    padding: 0.75rem 1.25rem;
+    margin-top: 1rem;
+    margin-bottom: 0;
+}
+
+.alert-success {
+    background-color: #d1e7dd;
+    border-color: #badbcc;
+    color: #0f5132;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    color: #842029;
+}
+
+.alert-info {
+    background-color: #cff4fc;
+    border-color: #b6e3f4;
+    color: #0c5460;
+}
+
+/* Dashboard */
+.table-responsive {
+    margin-top: 20px;
+}
+
+.table th {
+    background-color: #343a40; /* Encabezado de tabla oscuro */
+    color: white;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, 0.05);
+}

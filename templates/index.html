@@ -1,26 +1,36 @@
 {% extends 'base.html' %}
 
-{% block title %}Lista de Recetas - Microondas Inteligente{% endblock %}
+{% block title %}Microondas Inteligente - Inicio{% endblock %}
 
 {% block content %}
-    <h1>Lista de Recetas</h1>
-    <ul class="list-group">
+    <h1>Microondas Inteligente</h1>
+    {% if request.args.get('mensaje_programacion') %}
+    <div class="alert alert-info">{{ request.args.get('mensaje_programacion') }}</div>
+    {% endif %}
+    <div class="row">
         {% for receta in recetas %}
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                <div>
-                    {{ receta.nombre }} - Tiempo: {{ receta.tiempo }} {{ receta.unidad_tiempo }}
+        <div class="col-md-4 mb-4" id="receta-{{ receta.id }}">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ receta.nombre }}</h5>
+                    <p class="card-text">Tiempo: {{ receta.tiempo }} {{ receta.unidad_tiempo }}</p>
+                    <button class="btn btn-primary btn-sm" onclick="enviarAlHorno({{ receta.id }})">Enviar al Horno</button>
+                    <button class="btn btn-secondary ml-2" onclick="personalizarReceta({{ receta.id }})">Personalizar</button>
+                    <button class="btn btn-info ml-2" onclick="programarReceta({{ receta.id }})">Programar</button>
                 </div>
-                <div>
-                    <button class="btn btn-primary btn-sm" onclick="enviarAlHorno({{ receta.id }})">Enviar al horno</button>
-                    <button class="btn btn-secondary btn-sm ml-2" onclick="personalizarReceta({{ receta.id }})">Personalizar</button>
-                    <button class="btn btn-info btn-sm ml-2" onclick="programarReceta({{ receta.id }})">Programar</button>
+                <div class="card-footer p-2">
+                    <div id="coccion-{{ receta.id }}" class="progress" style="display:none;">
+                        <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%;">0%</div>
+                    </div>
+                    <div id="mensaje-final-{{ receta.id }}" class="alert alert-success mt-2" style="display:none;"></div>
                 </div>
-            </li>
+            </div>
+        </div>
         {% endfor %}
-    </ul>
+    </div>
 
-    <div class="modal fade" id="programarModal" tabindex="-1" role="dialog" aria-labedlledby="programarModalLabel" aria-hidden="true">
-        <div class = "modal-dialog" role="document">
+    <div class="modal fade" id="programarModal" tabindex="-1" role="dialog" aria-labelledby="programarModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="programarModalLabel">Programar Cocción</h5>
@@ -28,18 +38,18 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div>
-                    <p>Seleecione la fecha y hora para inciar la cocción de la receta con ID <span id="receta-id-programar"></span>:</p>
-                    <form id="programarForm" method="POST" action="/guardar_programacion/0">
+                <div class="modal-body">
+                    <p>Seleccione la fecha y hora para iniciar la cocción de la receta con ID <span id="receta-id-programar"></span>:</p>
+                    <form id="programarForm" method="POST">
                         <div class="form-group">
-                            <label for="programar_hora">Fecha:</label>
-                            <input type="date" class="form-control" id="programar_fecha" name="fecha">
+                            <label for="fecha">Fecha:</label>
+                            <input type="date" class="form-control" id="fecha" name="fecha" required>
                         </div>
                         <div class="form-group">
-                            <label for="programar_hora">Hora:</label>
-                            <input type="time" class="form-control" id="programar_hora" name="hora">
+                            <label for="hora">Hora:</label>
+                            <input type="time" class="form-control" id="hora" name="hora" required>
                         </div>
-                        <input type="hidden" id="programar_receta_id" name="receta_id" value="">
+                        <input type="hidden" id="programar_receta_id" name="receta_id">
                         <button type="submit" class="btn btn-primary">Guardar Programación</button>
                     </form>
                 </div>
@@ -49,18 +59,55 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block scripts %}
     <script>
-        function enviarAlHorno(recetaID) {
+        function enviarAlHorno(recetaId) {
+            const cardFooter = document.querySelector(`#receta-${recetaId} .card-footer`)
+            const progresoDiv = document.getElementById(`coccion-${recetaId}`);
+            const progressBar = progresoDiv.querySelector('.progress-bar');
+            const mensajeFinalDiv = document.getElementById(`mensaje-final-${recetaId}`);
+            
+            // Mostrar barra de progreso
+            progresoDiv.style.display = 'block';
+            progressBar.style.width = '0%';
+            progressBar.textContent = '0%';
+            mensajeFinalDiv.style.display = 'none';
+            
+            // Hacer la petición al servidor
             fetch(`/enviar_horno/${recetaId}`)
                 .then(response => response.json())
                 .then(data => {
                     alert(data.mensaje);
-                    alert(data.mensaje_final);
-                    console.log(`Receta '${data.receta}' cocinada.`);
+                    
+                    const duracionTotal = data.tiempo;
+
+                    let tiempoTranscurrido = 0;
+                    const intervalo = setInterval(function() {
+                        tiempoTranscurrido += 0.1;
+                        const porcentaje = Math.min((tiempoTranscurrido / duracionTotal) * 100, 100);
+                        const porcentajeRedondeado = Math.round(porcentaje);
+                        
+                        progressBar.style.width = porcentajeRedondeado + '%';
+                        progressBar.textContent = porcentajeRedondeado + '%';
+                        
+                        if (porcentajeRedondeado >= 100) {
+                            clearInterval(intervalo);
+                            mensajeFinalDiv.textContent = data.mensaje_final;
+                            mensajeFinalDiv.className = "alert alert-success mt-2";
+                            mensajeFinalDiv.style.display = 'block';
+                            setTimeout(function() {
+                                alert(data.mensaje_final);
+                            }, 100);
+                        }
+                    }, 100);
                 })
                 .catch(error => {
-                    console.error('Error al enviar al horno:', error);
-                    alert('Ocurrió un error al enviar la receta al horno.');
+                    console.error('Error:', error);
+                    mensajeFinalDiv.textContent = 'Error al procesar la receta';
+                    mensajeFinalDiv.className = "alert alert-danger mt-2";
+                    mensajeFinalDiv.style.display = 'block';
                 });
         }
 
@@ -69,25 +116,10 @@
         }
 
         function programarReceta(recetaId) {
-            // Mostrar el modal de Bootstrap
             $('#programarModal').modal('show');
-
-            //actualizar el texto del modal con el ID de la receta
             document.getElementById('receta-id-programar').textContent = recetaId;
-
-            // Actualizar el valor del campo oculto con el ID de la receta
-            document.getElementByID('programar_receta_id').value = recetaId;
-
-            // Actualizar la acción del formulario con el ID de la receta
             const programarForm = document.getElementById('programarForm');
             programarForm.action = `/guardar_programacion/${recetaId}`;
         }
-
-        // Inicializar el modal de Bootstrap
-        $(document).ready(function(){
-            $('#programarModal').modal({
-                show: false // Inicialmente oculto
-            });
-        });
     </script>
 {% endblock %}
