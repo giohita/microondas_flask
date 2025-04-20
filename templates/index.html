@@ -21,14 +21,20 @@
                     alert('Ocurrió un error al enviar la receta al horno.');
                 });
             }
+
+            function personalizarReceta(recetaId) {
+                // Por ahora, simplemente redirigiremos a una nueva página
+                window.location.href = `/personalizar_receta/${recetaId}`;
+            }
         </script>
     </head>
     <body>
-        <h1>Lista de Recetasa</h1>
+        <h1>Lista de Recetas</h1>
         <ul>
             {% for receta in recetas %}
             <li>{{ receta.nombre }} - Tiempo: {{ receta.tiempo }} {{receta.unidad_tiempo}}
                 <button onclick="enviarAlHorno({{ receta.id }})">Enviar al horno</button>
+                <button onclick="personalizarReceta({{ receta.id }})">Personalizar</button>
             </li>
             {% endfor %}
         </ul>
