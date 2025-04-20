@@ -1,23 +1,16 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Personalizar Receta</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="">
-    </head>
-    <body>
+{% extends 'base.html' %}
+
+{% block title %}Lista de Recetas - Microondas Inteligente{% endblock %}
+
+{% block content %}
         <h1>Personalizar "{{ receta.nombre }}"</h1>
         <form action="/guardar_personalizacion/{{ receta.id }}" method="POST">
-            <div>
+            <div class="form-group">
                 <label for="tiempo">Nuevo timepo de cocción (en {{ receta.unidad_tiempo }}):</label>
-                <input type "number" id="tiempo" name="tiempo" value="{{ receta.tiempo }}">
+                <input type "number" class="form-control" id="tiempo" name="tiempo" value="{{ receta.tiempo }}">
             </div>
-            <button type="submit">Guardar Cambios</button>
-            <a href="/">Volver a la lista de recetas</a>
+            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+            <a href="/" class="btn btn-secondary ml-2">Volver a la lista de recetas</a>
         </form>
-        <script src="" async defer></script>
     </body>
-</html>
+{% endblock %}
